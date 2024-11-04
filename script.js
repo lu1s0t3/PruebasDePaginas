@@ -1,21 +1,18 @@
-// script.js
+window.onload = function() { 
+    const params = new URLSearchParams(window.location.search);
+    const redirectPage = params.get('redirect');
 
-// Esta función se ejecuta al cargar la página index.html
-window.onload = function() {
-    const redirectPage = localStorage.getItem('redirectPage');
     if (redirectPage) {
-        setTimeout(() => {
-            window.location.href = redirectPage;
-            localStorage.removeItem('redirectPage'); // Limpiar el valor después de usarlo
-        }, 6000);
+        let countdown = 3; // Iniciar el conteo en 3 segundos
+        const countdownElement = document.getElementById('countdown');
+
+        const interval = setInterval(function() {
+            countdown--;
+            countdownElement.textContent = countdown;
+            if (countdown <= 0) {
+                clearInterval(interval);
+                window.location.href = redirectPage;
+            }
+        }, 1000); // Actualiza cada segundo
     }
 };
-
-// Redirige desde las páginas de política y eliminación de datos
-if (document.title.includes("Política de Privacidad")) {
-    localStorage.setItem('redirectPage', 'politica_privacidad.html');
-    window.location.href = "index.html";
-} else if (document.title.includes("Instrucciones para la Eliminación de Datos")) {
-    localStorage.setItem('redirectPage', 'instrucciones_eliminacion_datos.html');
-    window.location.href = "index.html";
-}
